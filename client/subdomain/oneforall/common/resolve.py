@@ -26,19 +26,23 @@ def filter_subdomain(data):
 def update_data(data, records):
     """
     更新解析结果
-
     :param list data: 待更新的数据列表
     :param dict records: 解析结果字典
     :return: 更新后的数据列表
     """
-    logger.log('DEBUG', f'正在更新解析结果')
+    logger.log('DEBUG', f'Updating resolved results')
+    if not records:
+        logger.log('ERROR', f'No valid resolved result')
+        return data
     for index, items in enumerate(data):
         if not items.get('content'):
             subdomain = items.get('subdomain')
             record = records.get(subdomain)
-            items.update(record)
+            if record:
+                items.update(record)
             data[index] = items
     return data
+
 
 
 def save_data(name, data):
